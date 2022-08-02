@@ -1,4 +1,4 @@
-package com.sparta.memoproject.config;
+package com.sparta.memoproject.security;
 
 import com.sparta.memoproject.jwt.JwtFilter;
 import com.sparta.memoproject.jwt.TokenProvider;

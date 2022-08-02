@@ -18,11 +18,9 @@ public class Memo extends Timestamped { // 생성,수정 시간을 자동으로 
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String username;
-    @Column(nullable = false)
     private String contents;
     @Column(nullable = false)
-    private String pw;
+    private Long memberId;
 
 //    public Memo(String title, String username, String contents, String pw) {
 //        this.title = title;
@@ -31,11 +29,14 @@ public class Memo extends Timestamped { // 생성,수정 시간을 자동으로 
 //        this.pw = pw;
 //    }
 
+    public Memo(MemoRequestDto requestDto, Long memberId) {
+        this.memberId = memberId;
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+    }
     public Memo(MemoRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
-        this.pw = requestDto.getPw();
     }
 //    public Memo(PwDto pwDto) {
 //        this.title = pwDto.getPw();
@@ -43,8 +44,6 @@ public class Memo extends Timestamped { // 생성,수정 시간을 자동으로 
 
     public void update(MemoRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
-        this.pw = requestDto.getPw();
     }
 }

@@ -1,4 +1,4 @@
-package com.sparta.memoproject.config;
+package com.sparta.memoproject.security;
 
 import com.sparta.memoproject.jwt.JwtAccessDeniedHandler;
 import com.sparta.memoproject.jwt.JwtAuthenticationEntryPoint;
@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // h2 database 테스트가 원활하도록 관련 API 들은 전부 무시
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring()
+        web
+                .ignoring()
                 .antMatchers("/h2-console/**", "/favicon.ico");
     }
 
