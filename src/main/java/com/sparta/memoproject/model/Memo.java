@@ -1,5 +1,6 @@
 package com.sparta.memoproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.memoproject.Timestamped;
 import com.sparta.memoproject.dto.MemoRequestDto;
 import lombok.Getter;
@@ -19,8 +20,9 @@ public class Memo extends Timestamped { // 생성,수정 시간을 자동으로 
     private String title;
     @Column(nullable = false)
     private String contents;
+
     @Column(nullable = false)
-    private Long memberId;
+    private String memberName;
 
 //    public Memo(String title, String username, String contents, String pw) {
 //        this.title = title;
@@ -29,8 +31,8 @@ public class Memo extends Timestamped { // 생성,수정 시간을 자동으로 
 //        this.pw = pw;
 //    }
 
-    public Memo(MemoRequestDto requestDto, Long memberId) {
-        this.memberId = memberId;
+    public Memo(MemoRequestDto requestDto, String memberName) {
+        this.memberName = memberName;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
