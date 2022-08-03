@@ -20,11 +20,12 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //GenerationType.IDENTITY : ID값이 서로 영향없이 자기만의 테이블 기준으로 올라간다.
     private Long id;
 
-    @Column(nullable = false)
-    private String writer;
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    private String memberName;
 
     @ManyToOne
     @JsonBackReference
@@ -39,13 +40,12 @@ public class Comment extends Timestamped {
 //    }
 
     public Comment(Memo memo, CommentRequestDto commentRequestDto) {
-        this.writer = commentRequestDto.getWriter();
         this.content = commentRequestDto.getContent();
         this.memo = memo;
+        this.memberName = memo.getMemberName();
     }
 
     public void setComment(CommentRequestDto commentRequestDto) {
-        this.writer = commentRequestDto.getWriter();
         this.content = commentRequestDto.getContent();
     }
 }

@@ -5,6 +5,7 @@ import com.sparta.memoproject.model.Comment;
 import com.sparta.memoproject.model.Memo;
 import com.sparta.memoproject.repository.CommentRepository;
 import com.sparta.memoproject.repository.MemoRepository;
+import jdk.nashorn.internal.runtime.Context;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository; // [2번]update메소드 작성 전에 id에 맞는 값을 찾으려면 find를 써야하는데 find를 쓰기위해서는 Repository가 있어야한다.
     private final MemoRepository memoRepository;
+    private final MemoService memoService;
 
     @Secured("ROLE_USER")
     @Transactional
@@ -36,9 +38,15 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment updateComment(Long commentId, CommentRequestDto commentRequestDto) {
+    public Comment updateComment(Long id, Long commentId, CommentRequestDto commentRequestDto) {
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
+
+        if(!memoService.getNickname().equals(memo.getMemberName())) {
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
+        }
         comment.setComment(commentRequestDto);
         return comment;
     }
@@ -49,8 +57,12 @@ public class CommentService {
                 .orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
+        if(!memoService.getNickname().equals(memo.getMemberName())) {
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
+        }
         memo.deleteComment(comment);
         return true;
+
     }
 }
 

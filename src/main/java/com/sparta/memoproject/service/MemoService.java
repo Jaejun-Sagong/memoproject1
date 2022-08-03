@@ -20,7 +20,7 @@ public class MemoService {
     private final MemoRepository memoRepository; // [2번]update메소드 작성 전에 id에 맞는 값을 찾으려면 find를 써야하는데 find를 쓰기위해서는 Repository가 있어야한다.
     private final MemberRepository memberRepository;
 
-    public String getNickname(){
+    public String getNickname() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Member> member = memberRepository.findById(Long.valueOf(userId));
         return member.get().getNickname();
@@ -31,13 +31,12 @@ public class MemoService {
         Memo memo = memoRepository.findById(id).orElseThrow( //[3번]  수정할 id에 해당하는 데이터를 repo에서 찾고 해당id를 갖는 memo를 호출한다.
                 () -> new NullPointerException("메모가 존재하지 않습니다")
         );
-
-        String nickname = getNickname();
-        if (memo.getMemberName().equals(nickname)) {
-            memo.update(requestDto);
-            return true;
+        if (!getNickname().equals(memo.getMemberName())) {
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
         }
-        return false;
+        memo.update(requestDto);
+        return true;
+
     }
 
     @Transactional
@@ -54,12 +53,10 @@ public class MemoService {
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("메모가 존재하지 않습니다")
         );
-        String nickname = getNickname();
-        if (memo.getMemberName().equals(nickname)) {
-            memoRepository.deleteById(id);
-            return true;
+        if (!getNickname().equals(memo.getMemberName())) {
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
         }
-        return false;
+        memoRepository.deleteById(id);
+        return true;
     }
-
 }

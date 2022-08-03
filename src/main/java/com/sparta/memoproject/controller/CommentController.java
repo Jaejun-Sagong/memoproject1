@@ -10,24 +10,25 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/auth/comment")
 public class CommentController {
 
     private final CommentService commentService;  // 필수적인 요소이기 때문에 final 선언
 
 
     @Secured("ROLE_USER")
-    @PostMapping("/api/auth/comment/{id}")
+    @PostMapping("/{id}")
     public Comment addComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.addComment(id, commentRequestDto);
     }
 
     @Secured("ROLE_USER")
-    @PutMapping("/api/auth/comment/{commentId}")
-    public Comment updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.updateComment(commentId, commentRequestDto);
+    @PutMapping("/{id}/{commentId}")
+    public Comment updateComment(@PathVariable Long id, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+        return commentService.updateComment(id, commentId, commentRequestDto);
     }
     @Secured("ROLE_USER")
-    @DeleteMapping("/api/auth/comment/{id}/{commentId}")
+    @DeleteMapping("/{id}/{commentId}")
     public Boolean deleteComment(@PathVariable Long id, @PathVariable Long commentId) {
         return commentService.deleteComment(id, commentId);
     }
