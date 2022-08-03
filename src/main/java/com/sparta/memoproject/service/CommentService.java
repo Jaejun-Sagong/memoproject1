@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.activation.CommandMap;
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor //final로 선언한 변수가 있으면 꼭 생성해달라는 것
@@ -23,15 +24,31 @@ public class CommentService {
 
     @Secured("ROLE_USER")
     @Transactional
-    public Long addComment(Long id, CommentRequestDto commentRequestDto) {
+    public Comment addComment(Long id, CommentRequestDto commentRequestDto) {
         Memo memo = memoRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         Comment comment = new Comment(memo, commentRequestDto);
         commentRepository.save(comment);
         memo.addComment(comment);
 
-        return comment.getId();
+        return comment;
 
+    }
+
+    @Transactional
+    public Comment updateComment(Long commentId, CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
+        comment.setComment(commentRequestDto);
+        return comment;
+    }
+
+    @Transactional
+    public Boolean deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
+        commentRepository.deleteById(commentId);
+        return true;
     }
 }
 
