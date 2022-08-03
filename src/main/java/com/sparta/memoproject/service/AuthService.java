@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.regex.Pattern;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -28,6 +30,10 @@ public class AuthService {
 
     @Transactional
     public MemberResponseDto signup(MemberRequestDto memberRequestDto) {
+        if(!(Pattern.matches("[a-zA-Z0-9]*$",memberRequestDto.getNickname()) && (memberRequestDto.getNickname().length() > 3 && memberRequestDto.getNickname().length() <13)
+        && Pattern.matches("[a-zA-Z0-9]*$",memberRequestDto.getPassword()) && (memberRequestDto.getPassword().length() > 3 && memberRequestDto.getPassword().length() <33))){
+            throw new IllegalArgumentException("닉네임 혹은 비밀번호 조건을 확인해주세요.");
+        }
         if (memberRepository.existsByNickname(memberRequestDto.getNickname())) {
             throw new RuntimeException("중복된 닉네임입니다.");
         } else if (!memberRequestDto.getPassword().equals(memberRequestDto.getPasswordConfirm()))
