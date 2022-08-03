@@ -29,10 +29,10 @@ public class MemoService {
     @Transactional //업데이트 할 때 이게 DB에 꼭 반영돼야 한다고 해주는 녀석
     public Memo update(Long id, MemoRequestDto requestDto) { //[1번]업데이트 메소드를 선언하고 id와 변경시킬 내용을 담은 녀석이 필요    [6번] return을 보고 반환타입 Long
         Memo memo = memoRepository.findById(id).orElseThrow( //[3번]  수정할 id에 해당하는 데이터를 repo에서 찾고 해당id를 갖는 memo를 호출한다.
-                () -> new NullPointerException("메모가 존재하지 않습니다")
+                () -> new IllegalArgumentException("메모가 존재하지 않습니다")
         );
         if (!getNickname().equals(memo.getMemberName())) {
-            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
+            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }
         memo.update(requestDto);
         return memo;
@@ -51,7 +51,7 @@ public class MemoService {
     @Transactional
     public boolean delete(long id) {
         Memo memo = memoRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("메모가 존재하지 않습니다")
+                () -> new IllegalArgumentException("메모가 존재하지 않습니다")
         );
         if (!getNickname().equals(memo.getMemberName())) {
             throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");

@@ -39,10 +39,10 @@ public class Comment extends Timestamped {
 //        this.authority = authority;
 //    }
 
-    public Comment(Memo memo, CommentRequestDto commentRequestDto) {
+    public Comment(Memo memo, String memberName, CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
         this.memo = memo;
-        this.memberName = memo.getMemberName();
+        this.memberName = memberName;
     }
 
     public void setComment(CommentRequestDto commentRequestDto) {
