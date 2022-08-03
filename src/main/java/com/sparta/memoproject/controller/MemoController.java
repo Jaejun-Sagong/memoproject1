@@ -1,7 +1,6 @@
 package com.sparta.memoproject.controller;
 
 import com.sparta.memoproject.dto.MemoRequestDto;
-import com.sparta.memoproject.dto.PwDto;
 import com.sparta.memoproject.model.Member;
 import com.sparta.memoproject.model.Memo;
 import com.sparta.memoproject.repository.MemberRepository;

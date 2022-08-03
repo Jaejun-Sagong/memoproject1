@@ -1,7 +1,6 @@
 package com.sparta.memoproject.service;
 
 import com.sparta.memoproject.dto.MemoRequestDto;
-import com.sparta.memoproject.dto.PwDto;
 import com.sparta.memoproject.model.Member;
 import com.sparta.memoproject.model.Memo;
 import com.sparta.memoproject.repository.MemberRepository;
@@ -26,6 +25,7 @@ public class MemoService {
         Optional<Member> member = memberRepository.findById(Long.valueOf(userId));
         return member.get().getNickname();
     }
+
     @Transactional //업데이트 할 때 이게 DB에 꼭 반영돼야 한다고 해주는 녀석
     public boolean update(Long id, MemoRequestDto requestDto) { //[1번]업데이트 메소드를 선언하고 id와 변경시킬 내용을 담은 녀석이 필요    [6번] return을 보고 반환타입 Long
         Memo memo = memoRepository.findById(id).orElseThrow( //[3번]  수정할 id에 해당하는 데이터를 repo에서 찾고 해당id를 갖는 memo를 호출한다.
@@ -40,6 +40,7 @@ public class MemoService {
         return false;
     }
 
+    @Transactional
     public Memo creatMemo(MemoRequestDto requestDto, String nickName) {
         Memo memo = new Memo(requestDto, nickName);
 
@@ -48,6 +49,7 @@ public class MemoService {
         return memo;
     }
 
+    @Transactional
     public boolean delete(long id) {
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("메모가 존재하지 않습니다")
@@ -59,4 +61,5 @@ public class MemoService {
         }
         return false;
     }
+
 }

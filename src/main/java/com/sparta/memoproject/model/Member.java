@@ -15,7 +15,7 @@ public class Member extends Timestamped {
 
    @Id
    @Column(name = "member_id")
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @GeneratedValue(strategy = GenerationType.AUTO) //GenerationType.IDENTITY : ID값이 서로 영향없이 자기만의 테이블 기준으로 올라간다.
    private Long id;
    @Column(nullable = false, unique = true)
    private String nickname;
