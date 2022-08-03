@@ -27,9 +27,9 @@ public class CommentController {
         return commentService.updateComment(commentId, commentRequestDto);
     }
     @Secured("ROLE_USER")
-    @DeleteMapping("/api/auth/comment/{commentId}")
-    public Boolean deleteComment(@PathVariable Long commentId) {
-        return commentService.deleteComment(commentId);
+    @DeleteMapping("/api/auth/comment/{id}/{commentId}")
+    public Boolean deleteComment(@PathVariable Long id, @PathVariable Long commentId) {
+        return commentService.deleteComment(id, commentId);
     }
 
 }

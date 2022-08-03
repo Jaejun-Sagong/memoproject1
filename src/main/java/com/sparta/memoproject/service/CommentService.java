@@ -44,10 +44,12 @@ public class CommentService {
     }
 
     @Transactional
-    public Boolean deleteComment(Long commentId) {
+    public Boolean deleteComment(Long id, Long commentId) {
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
-        commentRepository.deleteById(commentId);
+        memo.deleteComment(comment);
         return true;
     }
 }
